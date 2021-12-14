@@ -3,6 +3,7 @@ import mammoth
 from flask import Flask, render_template, request
 import os
 from xml.sax.saxutils import unescape
+import sys
 
 
 def show_description(path):
@@ -12,7 +13,16 @@ def show_description(path):
 
 
 if __name__ == '__main__':
-    app = Flask(__name__)
+    if getattr(sys, 'frozen', False):
+        application_path = os.path.dirname(sys.executable)
+    elif __file__:
+        application_path = os.path.dirname(__file__)
+    else:
+        application_path = os.path.dirname(sys.argv[0])
+
+    print(application_path)
+
+    app = Flask(__name__, static_folder=os.path.join(application_path, 'static'))
 
     data_dir = 'static'
     main_jpg = 'main.jpg'
@@ -36,7 +46,8 @@ if __name__ == '__main__':
         if show is not None:
             card = {
                 'title': show,
-                'image': os.path.join(show, main_jpg),
+                # 'image': os.path.join(show, main_jpg),
+                'image': f'{show}/{main_jpg}',
                 'short': unescape(show_description(os.path.join('static', show, 'short.docx'))),
                 'long': unescape(show_description(os.path.join('static', show, 'long.docx'))),
             }

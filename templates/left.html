@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="Page description" name="description">
+    <meta name="google" content="notranslate" />
+
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="{{url_for('static', filename='w3.css')}}" rel="stylesheet">
+
+    <title>ТАРО</title>
+</head>
+<body>
+<table width="100%">
+    <tr>
+        <td width="10%" class="inner-table">
+            <!-- Navigation table with images -->
+            <table class="left-table">
+                <!--tr>
+                    <td colspan="3">
+                        <h1 class="d-title">Все карты</h1>
+                    </td>
+                </tr-->
+                <tr>
+                    {% for card in cards: %}
+                        {% if show and (show['title'] == card['title']) %}
+                        <td class="menu-item target">
+                        {% else %}
+                        <td class="menu-item">
+                        {% endif %}
+                            <a href="right.html?show={{ card['title'] }}" target='right'>
+                                <b>{{ card['title'] }}</b><br>
+<!--                                <img src="{{ url_for('static', filename=card['image']) }}" />-->
+                                <img src="static/{{ card['image'] }}" />
+                            </a>
+                        </td>
+                        {% if card['r'] == 0: %}
+                            </tr><tr>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
+

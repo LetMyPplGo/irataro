@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="Page description" name="description">
+    <meta name="google" content="notranslate" />
+
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="{{url_for('static', filename='w3.css')}}" rel="stylesheet">
+
+    <title>ТАРО</title>
+</head>
+<body>
+<table width="100%">
+    <tr>
+        <td class="inner-table">
+            <!-- Description section -->
+            {% if show: %}
+            <table class="right-table">
+                <tr>
+                    <td colspan="2">
+                        <h1 class="d-title">{{ show['title'] }}</h1>
+                    </td>
+                </tr>
+                <tr class="border-bottom">
+                    <td>
+                        <img src="{{url_for('static', filename=show['image'])}}" />
+                    </td>
+                    <td width="100%" class="short-description">
+                        <div>{{ show['short']|safe }}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div>{{ show['long']|safe }}</div>
+                    </td>
+                </tr>
+            </table>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+</body>
+</html>

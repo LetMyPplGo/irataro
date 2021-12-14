@@ -29,8 +29,12 @@ if __name__ == '__main__':
 
     @app.route('/')
     @app.route('/index')
-    def hello():
-        show = request.args.get('show')
+    def index():
+        return render_template('frameset.html')
+
+
+    @app.route('/left.html')
+    def left():
         cards = []
         i = 0
         for folder in os.listdir(data_dir):
@@ -42,6 +46,12 @@ if __name__ == '__main__':
                     'r': i % 3
                 })
 
+        return render_template('left.html', cards=cards)
+
+
+    @app.route('/right.html')
+    def hello():
+        show = request.args.get('show')
         card = None
         if show is not None:
             card = {
@@ -52,6 +62,6 @@ if __name__ == '__main__':
                 'long': unescape(show_description(os.path.join('static', show, 'long.docx'))),
             }
 
-        return render_template('index.html', title='Welcome', cards=cards, show=card)
+        return render_template('right.html', show=card)
 
     app.run(debug=True)

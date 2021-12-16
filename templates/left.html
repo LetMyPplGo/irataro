@@ -9,40 +9,36 @@
 
     <!-- Disable tap highlight on IE -->
     <meta name="msapplication-tap-highlight" content="no">
-
-    <link href="{{url_for('static', filename='w3.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 
     <title>ТАРО</title>
 </head>
 <body>
-<table width="100%">
+<table  class="rwd-table">
     <tr>
         <td width="10%" class="inner-table">
             <!-- Navigation table with images -->
-            <table class="left-table">
-                <!--tr>
-                    <td colspan="3">
-                        <h1 class="d-title">Все карты</h1>
-                    </td>
-                </tr-->
-                <tr>
-                    {% for card in cards: %}
-                        {% if show and (show['title'] == card['title']) %}
-                        <td class="menu-item target">
-                        {% else %}
-                        <td class="menu-item">
-                        {% endif %}
-                            <a href="right.html?show={{ card['title'] }}" target='right'>
-                                <b>{{ card['title'] }}</b><br>
-<!--                                <img src="{{ url_for('static', filename=card['image']) }}" />-->
-                                <img src="static/{{ card['image'] }}" />
-                            </a>
-                        </td>
-                        {% if card['r'] == 0: %}
-                            </tr><tr>
-                        {% endif %}
+            <!--table class="left-table"-->
+            <table class="rwd-table">
+                {% for group in cards: %}
+                    <tr>
+                        <th class="left-th">
+                            {{ group['name'] }}
+                        </th>
+                    </tr>
+                    {% for card in group['cards'] %}
+                        <tr>
+                            <td class="menu-item">
+                                <a href="right.html?show={{ card['title'] }}&group={{ card['group'] }}" target='right'>
+                                    <div>
+                                        {{ card['title'] }}
+                                        <!--img src="static/{{ card['image'] }}" /-->
+                                    </div>
+                                </a>
+                            </td>
+                        </tr>
                     {% endfor %}
-                </tr>
+                {% endfor %}
             </table>
         </td>
     </tr>

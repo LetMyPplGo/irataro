@@ -9,7 +9,7 @@ import sys
 def show_description(path):
     with open(path, "rb") as docx_file:
         result = mammoth.convert_to_html(docx_file)
-        return result.value
+        return unescape(result.value)
 
 
 if __name__ == '__main__':
@@ -35,31 +35,41 @@ if __name__ == '__main__':
 
     @app.route('/left.html')
     def left():
+        folders = [
+            'Старшие арканы',
+            'Придворные карты',
+            'Ситуационные посохов',
+            'Ситуационные кубков',
+            'Ситуационные мечей',
+            'Ситуационные пентаклей',
+        ]
         cards = []
-        i = 0
-        for folder in os.listdir(data_dir):
-            if os.path.exists(os.path.join(data_dir, folder, main_jpg)):
-                i += 1
-                cards.append({
-                    'title': folder,
-                    'image': os.path.join(folder, main_jpg),
-                    'r': i % 3
-                })
+        for upper_dir in folders:
+            group = {'name': upper_dir, 'cards': []}
+            for folder in os.listdir(os.path.join(data_dir, upper_dir)):
+                if os.path.exists(os.path.join(data_dir, upper_dir, folder, main_jpg)):
+                    group['cards'].append({
+                        'title': folder,
+                        'group': upper_dir,
+                        'image': os.path.join(folder, main_jpg),
+                    })
+            cards.append(group)
 
         return render_template('left.html', cards=cards)
 
 
     @app.route('/right.html')
-    def hello():
+    def right():
         show = request.args.get('show')
+        group = request.args.get('group')
         card = None
         if show is not None:
             card = {
                 'title': show,
-                # 'image': os.path.join(show, main_jpg),
-                'image': f'{show}/{main_jpg}',
-                'short': unescape(show_description(os.path.join('static', show, 'short.docx'))),
-                'long': unescape(show_description(os.path.join('static', show, 'long.docx'))),
+                # 'image': os.path.join(group, show, main_jpg),
+                'image': f'{group}/{show}/{main_jpg}',
+                'short': show_description(os.path.join('static', group, show, 'short.docx')),
+                'long': show_description(os.path.join('static', group, show, 'long.docx')),
             }
 
         return render_template('right.html', show=card)
